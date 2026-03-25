@@ -1,0 +1,35 @@
+[authors]
+other = "작성자"
+
+[editors]
+other = "편집자"
+
+[published]
+other = "게시일"
+
+[updated]
+other = "수정일"
+
+[sections]
+other = "섹션"
+
+[search]
+other = "이 책에서 검색..."
+
+[searchCountPrefix]
+other = "검색 결과"
+
+[searchCountSuffix]
+other = "건"
+
+[prerequisites]
+other = "선행 읽을거리"
+
+[translations]
+other = "번역본"
+
+[copyright1]
+other = "Copyright 2021-2022 Sergey Slotin"
+
+[copyright2]
+other = " " # Content is distributed under <a href='https://tldrlegal.com/license/creative-commons-attribution-noncommercial-4.0-international-(cc-by-nc-4.0)'>CC BY-NC</a>

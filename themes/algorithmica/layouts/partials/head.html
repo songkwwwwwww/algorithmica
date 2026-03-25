@@ -19,6 +19,9 @@
   <link rel="stylesheet" id="theme">
 
   <script>
+    const searchLanguage = '{{ .Site.Language.Lang }}'
+    const useLunrIndex = ['en', 'ru'].includes(searchLanguage)
+
     function toggleSidebar() {
       console.log("Toggling sidebar visibility")
       var sidebar = document.getElementById('sidebar')
@@ -53,26 +56,59 @@
       if (!index) {
         console.log("Fetching index")
         const response = await fetch('/searchindex.json')
-        const pages = await response.json()
-        index = lunr(function() {
-          this.use(lunr.multiLanguage('en', 'ru'))
-          this.field('title', {
-            boost: 5
+        articles = await response.json()
+
+        if (useLunrIndex) {
+          index = lunr(function() {
+            this.use(lunr.multiLanguage('en', 'ru'))
+            this.field('title', {
+              boost: 5
+            })
+            this.field('content', {
+              boost: 1
+            })
+            articles.forEach(function(doc) {
+              this.add(doc)
+            }, this)
           })
-          this.field('content', {
-            boost: 1
-          })
-          pages.forEach(function(doc) {
-            this.add(doc)
-            articles.push(doc)
-          }, this)
-        })
+        } else {
+          index = null
+        }
         console.log("Ready to search")
       }
     }
 
     var articles = []
     var index = undefined
+
+    function normalizeSearchText(text) {
+      return text.toLocaleLowerCase()
+    }
+
+    function substringSearch(query) {
+      const normalizedQuery = normalizeSearchText(query)
+
+      return articles
+        .map(function(article) {
+          const normalizedTitle = normalizeSearchText(article.title)
+          const normalizedContent = normalizeSearchText(article.content)
+          let score = 0
+
+          if (normalizedTitle.includes(normalizedQuery))
+            score += 2
+          if (normalizedContent.includes(normalizedQuery))
+            score += 1
+
+          return score ? { article, score } : null
+        })
+        .filter(Boolean)
+        .sort(function(a, b) {
+          return b.score - a.score
+        })
+        .map(function(entry) {
+          return entry.article
+        })
+    }
 
     function search() {
       var query = document.getElementById('search-bar').value
@@ -84,15 +120,18 @@
         countDiv.innerHTML = ''
         return
       }
-      
-      var results = index.search(query)
+
+      var results = useLunrIndex
+        ? index.search(query).map(function(result) {
+            return articles[result.ref]
+          })
+        : substringSearch(query)
 
       countDiv.innerHTML = '{{ T "searchCountPrefix" }} <b>' + results.length + '</b> {{ T "searchCountSuffix" }}'
 
       let resultList = ''
 
-      for (const n in results) {
-        const item = articles[results[n].ref]
+      for (const item of results) {
         resultList += '<li><a href="' + item.path + '">' + item.title + '</a> <p>'
         const text = item.content
 
