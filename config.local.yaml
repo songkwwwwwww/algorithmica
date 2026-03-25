@@ -1,0 +1,26 @@
+# Local-only overrides for Korean-first preview.
+baseURL: "http://localhost:1313/"
+defaultContentLanguage: ko
+defaultContentLanguageInSubdir: false
+languages:
+  ko:
+    title: Algorithmica Korea
+    baseURL: http://localhost:1313
+    contentDir: content/korean
+    languageName: 한국어
+    languageCode: "ko-kr"
+    weight: 1
+  en:
+    title: Algorithmica
+    baseURL: http://localhost:1314
+    contentDir: content/english
+    languageName: English
+    languageCode: "en-us"
+    weight: 2
+  ru:
+    title: Алгоритмика
+    baseURL: http://localhost:1315
+    contentDir: content/russian
+    languageName: Русский
+    languageCode: "ru-ru"
+    weight: 3

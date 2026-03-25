@@ -39,6 +39,13 @@ languages:
     languageName: Русский
     languageCode: "ru-ru"
     weight: 2
+  ko:
+    title: Algorithmica Korea
+    baseURL: https://ko.algorithmica.org
+    contentDir: content/korean
+    languageName: 한국어
+    languageCode: "ko-kr"
+    weight: 3
 params:
   repo: "https://github.com/algorithmica-org/algorithmica"
   reveal_hugo:

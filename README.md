@@ -6,6 +6,18 @@ You can contribute via [Prose](https://prose.io/) by clicking on the pencil icon
 
 If you happen to speak Russian, please also read the [contributing guidelines](https://ru.algorithmica.org/contributing/).
 
+## Local Preview
+
+Install Hugo and run `hugo serve` in the repository root for the default local setup.
+
+If you are working on the Korean translation and want Korean to be the primary local site, use:
+
+```bash
+hugo serve --config config.yaml,config.local.yaml -D
+```
+
+This keeps the production configuration intact while making the Korean content available on `localhost:1313`, English on `localhost:1314`, and Russian on `localhost:1315`.
+
 ---
 
 Key technical changes from the [previous version](https://github.com/algorithmica-org/articles):
